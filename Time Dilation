@@ -1,0 +1,31 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+c = 299792458 # Speed of light
+
+def gamma(v):
+    # Calculates the Lorentz factor
+    return 1 / np.sqrt(1 - (v/c)**2)
+
+def time_dilation(t0, v):
+    # Calculates time-dilated time
+    return gamma(v) * t0
+
+# Generate a range of velocities from 0 to just below c
+v_values = np.linspace(0, 0.999 * c, 500)
+
+# Calculate time-dilated values for a proper time of 20 units
+time_values = [time_dilation(20, v) for v in v_values]
+
+plt.figure(figsize=(10, 6))
+# Plot velocity (as a fraction of c) vs. dilated time
+plt.plot(v_values / c, time_values)
+plt.xlabel('Velocity (v/c)') # X-axis label
+plt.ylabel('Dilated Time (t′) for t0 = 20') # Y-axis label
+plt.title('Time Dilation vs. Velocity') # Plot title
+plt.grid(True) # Add grid
+plt.ylim(0, 100) # Set Y-axis limits
+plt.axvline(x=1, color='r', linestyle='--', label='Speed of Light (c)') # Mark speed of light
+plt.legend() # Display legend
+plt.show() # Show the plot
+
