@@ -1,0 +1,29 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Calculate velocities from 0 to just below the speed of light
+v_values = np.linspace(0, 0.999 * c, 500)
+
+# Calculate Lorentz factor for each velocity
+gamma_values = [gamma(v) for v in v_values]
+
+# Create the plot
+plt.figure(figsize=(10, 6))
+# Plot Lorentz factor vs. velocity
+plt.plot(v_values / c, gamma_values)
+# Set x-axis label
+plt.xlabel('Velocity (v/c)')
+# Set y-axis label
+plt.ylabel('Lorentz Factor (gamma)')
+# Set plot title
+plt.title('Lorentz Factor vs. Velocity')
+# Add grid
+plt.grid(True)
+# Set y-axis limits
+plt.ylim(0, 10)
+# Mark the speed of light on the x-axis
+plt.axvline(x=1, color='r', linestyle='--', label='Speed of Light (c)')
+# Display legend
+plt.legend()
+# Show the plot
+plt.show()
