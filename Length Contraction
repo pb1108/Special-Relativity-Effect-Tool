@@ -1,0 +1,33 @@
+import numpy as np # Import NumPy for numerical operations
+import matplotlib.pyplot as plt # Import Matplotlib for plotting
+
+c = 299792458 # Define the speed of light
+
+def gamma(v):
+    # Calculates the Lorentz factor
+    return 1 / np.sqrt(1 - (v/c)**2)
+
+def length_contraction(L0, v):
+    # Calculates the contracted length
+    return L0 / gamma(v)
+
+# Generate a range of velocities from 0 to just below c
+v_values = np.linspace(0, 0.999 * c, 500)
+
+L0 = 10 # Define the original length
+# Calculate contracted lengths for each velocity
+contracted_lengths = [length_contraction(L0, v) for v in v_values]
+
+# Create a new figure for the plot
+plt.figure(figsize=(10, 6))
+# Plot velocity (as a fraction of c) vs. contracted length
+plt.plot(v_values / c, contracted_lengths)
+plt.xlabel('Velocity (v/c)') # Set X-axis label
+plt.ylabel('Contracted Length (L′) for L0 = 10') # Set Y-axis label
+plt.title('Length Contraction vs. Velocity') # Set plot title
+plt.grid(True) # Add a grid to the plot
+plt.ylim(0, L0 * 1.1) # Set Y-axis limits
+plt.axvline(x=1, color='r', linestyle='--', label='Speed of Light (c)') # Mark speed of light on the X-axis
+plt.axhline(y=L0, color='gray', linestyle=':', label='Original Length (L0)') # Mark original length on the Y-axis
+plt.legend() # Display the legend
+plt.show() # Show the plot
