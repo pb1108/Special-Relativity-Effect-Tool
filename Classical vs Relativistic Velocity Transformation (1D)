@@ -1,0 +1,56 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+c = 299792458
+
+def gamma(v_val):
+    if v_val >= c:
+        return np.inf
+    return 1 / np.sqrt(1 - (v_val/c)**2)
+
+def relativistic_velocity_addition(u_vec_s, v_relative):
+    ux_s, uy_s, uz_s = u_vec_s
+    v = v_relative
+    denominator = (1 - ux_s * v / c**2)
+    if denominator == 0:
+        return np.inf, np.inf, np.inf
+    gamma_v = gamma(v)
+    ux_prime = (ux_s - v) / denominator
+    uy_prime = uy_s / (gamma_v * denominator)
+    uz_prime = uz_s / (gamma_v * denominator)
+    return ux_prime, uy_prime, uz_prime
+
+# v_relative is the velocity of frame S' with respect to S
+v_relative = 0.5 * c
+
+# u_x_s_values is the velocity of an object in frame S along the x-axis
+u_x_s_values = np.linspace(-0.999 * c, 0.999 * c, 500)
+
+transformed_u_x_prime_values = []
+classical_u_x_prime_values = []
+
+for u_x_s in u_x_s_values:
+    # Relativistic transformation
+    ux_prime, _, _ = relativistic_velocity_addition((u_x_s, 0, 0), v_relative)
+    transformed_u_x_prime_values.append(ux_prime)
+
+    # Classical transformation
+    classical_u_x_prime_values.append(u_x_s - v_relative)
+
+plt.figure(figsize=(10, 6))
+plt.plot(u_x_s_values / c, np.array(transformed_u_x_prime_values) / c, label='Relativistic Transformation')
+plt.plot(u_x_s_values / c, np.array(classical_u_x_prime_values) / c, linestyle='--', color='gray', label='Classical Transformation')
+
+plt.xlabel('Object Velocity in S (u/c)')
+plt.ylabel(f"Object Velocity in S' (u'/c) for v_relative = {v_relative/c:.2f}c")
+plt.title('Relativistic vs. Classical Velocity Transformation (1D)')
+plt.grid(True)
+plt.axhline(y=1, color='red', linestyle=':', label='c')
+plt.axhline(y=-1, color='red', linestyle=':')
+plt.legend()
+plt.ylim(-1.2, 1.2) # Set y-axis limits to clearly show c and -c
+plt.tight_layout()
+plt.show()
+
+
+
