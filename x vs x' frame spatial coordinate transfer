@@ -1,0 +1,31 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+c = 299792458
+
+def gamma(v):
+    return 1 / np.sqrt(1 - (v/c)**2)
+
+def lorentz_transform(x, t, v):
+    g = gamma(v)
+
+    xp = g * (x - v*t)
+    tp = g * (t - v*x/c**2)
+
+    return xp, tp
+
+x_values = np.linspace(-10, 10, 500)
+t = 1
+v = 0.8 * c
+
+x_prime_values = [lorentz_transform(x, t, v)[0] for x in x_values]
+
+plt.figure(figsize=(10, 6))
+plt.plot(x_values, x_prime_values)
+plt.xlabel('Original Spatial Coordinate (x)')
+plt.ylabel(f"Transformed Spatial Coordinate (x') at v={v/c:.2f}c, t={t}s")
+plt.title('Lorentz Transformation: x versus x\'')
+plt.grid(True)
+plt.axvline(x=0, color='gray', linestyle='--')
+plt.axhline(y=0, color='gray', linestyle='--')
+plt.show()
