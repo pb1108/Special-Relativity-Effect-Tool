@@ -1,0 +1,47 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+c = 299792458  # Speed of light
+u = 0.80 * c  # Velocity of the object in frame S
+
+# Range of angles in frame S (0 to 180 degrees)
+theta_deg = np.linspace(0, 180, 500)
+theta_rad = np.radians(theta_deg)
+
+# Relative velocities of frame S' (beta = v/c)
+betas = [0.1, 0.4, 0.6, 0.8, 0.95]
+
+plt.figure(figsize=(10, 6))
+
+# Iterate through different relative velocities for frame S'
+for beta in betas:
+    v = beta * c
+    gamma = 1 / np.sqrt(1 - beta**2)
+
+    # Transformation components for calculating transformed angle
+    num = u * np.sin(theta_rad) * np.sqrt(1 - beta**2)
+    den = u * np.cos(theta_rad) - v
+
+    # Calculate transformed angle using arctan2 for correct quadrant handling
+    theta_prime_rad = np.arctan2(num, den)
+    theta_prime_deg = np.degrees(theta_prime_rad)
+
+    # Adjust transformed angles to be within 0 to 180 degrees for plotting
+    theta_prime_deg = np.where(theta_prime_deg < 0, theta_prime_deg + 360, theta_prime_deg)
+
+    # Plot the transformed angle for the current beta
+    plt.plot(theta_deg, theta_prime_deg, label=f'v/c = {beta}')
+
+# Reference line (Classical case where observed angle equals original angle)
+plt.plot(theta_deg, theta_deg, 'k--', alpha=0.5, label='Classical (v=0)')
+
+# Plot customization
+plt.title(f'Relativistic Angle Transformation for Object Velocity u = {u/c:.2f}c')
+plt.xlabel('Angle in Frame S (θ) [degrees]')
+plt.ylabel("Observed Angle in Frame S' (θ') [degrees]")
+plt.xlim(0, 180)
+plt.ylim(0, 180)
+plt.legend()
+plt.grid(True, linestyle=':', alpha=0.6)
+plt.show()
