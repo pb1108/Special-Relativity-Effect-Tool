@@ -1,0 +1,27 @@
+
+# Speed of light in a vacuum (m/s)
+c = 299792458
+
+def gamma(v):
+    # Calculates the Lorentz factor (gamma)
+    return 1 / np.sqrt(1 - (v/c)**2)
+
+def time_dilation(t0, v):
+    # Calculates time dilation (t')
+    return gamma(v) * t0
+
+def length_contraction(L0, v):
+    # Calculates length contraction (L')
+    return L0 / gamma(v)
+
+def lorentz_transform(x, t, v):
+    # Performs the Lorentz transformation for spacetime coordinates (x, t)
+    g = gamma(v)
+
+    # Transformed spatial coordinate
+    xp = g * (x - v*t)
+    # Transformed temporal coordinate
+    tp = g * (t - v*x/c**2)
+
+    return xp, tp
+
